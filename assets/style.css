@@ -1,0 +1,168 @@
+/* style.css */
+
+/* IMPORT DES POLICES  */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+/* Forcer la résolution de base */
+/* 1. Le Body : Sert uniquement à centrer l'application sur un grand écran */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    background-color: #020205; /* Fond noir profond de sécurité */
+    /*font-family: 'Cinzel', serif;*/
+    overflow: hidden;/* Permet de centrer verticalement si l'écran est grand */
+}
+
+/* 2. Le Conteneur Principal : C'est LUI qui reçoit l'image et la contrainte de taille */
+#main-container {
+    width: 1024px;
+    height: 600px;
+    position: relative;
+    overflow: hidden; /* Empêche tout élément de déborder de cette zone */
+
+}
+
+/* --- CALQUES DE LA GALAXIE (Z-INDEX NÉGATIFS POUR RESTER EN FOND) --- */
+
+/* 1. Éclairage de base (Lueur bleue très large et profonde) */
+.galaxy-light-base {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(98, 145, 214, 0.74) 0%, rgba(12, 39, 126, 0.808) 80%);
+    z-index: -10;
+    animation: pulse-ambient 10s ease-in-out infinite;
+}
+
+/* 2. Le Cœur Galactique (Point blanc/bleu intense qui pulse) */
+.galaxy-heart-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 100px; height: 100px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, #ffffff 0%, #ea3434 30%, transparent 70%);
+    filter: blur(10px);
+    z-index: -9;
+    animation: pulse-heart 4s ease-in-out infinite;
+}
+
+/* 3. Le Fond Étoilé PNG (Celui avec vos pixels transparents) */
+.galaxy-stars-layer {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    /* Chemin mis à jour selon vos dossiers */
+    background-image: url('images/background/deepSpace_transparent.png');
+    background-size: cover;
+    background-position: center;
+    z-index: -8;
+}
+
+/* 4. L'Anneau de ²atière GÉANT (Conteneur de perspective) */
+.galaxy-ring-perspective {
+    position: absolute;
+    /* On augmente massivement la taille pour qu'il sorte de l'écran */
+    width: 1500px; 
+    height: 1200px; 
+    
+    top: 50%;
+    left: 50%;
+    /* Centrage parfait + Perspective accentuée */
+    transform: translate(-50%, -50%) perspective(1400px);
+    
+    z-index: -7;
+    pointer-events: none;
+}
+
+.galaxy-ring-inner {
+    width: 100%;
+    height: 100%;
+    background-image: url('images/background/anneau.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    /* On passe à 82 degrés pour un effet très "étiré/plat" */
+    transform: rotateX(82deg); 
+    animation: rotate-ring 400s linear infinite; /* Encore plus lent pour le gigantisme */
+}
+/* --- DÉFINITION DES ANIMATIONS --- */
+
+/* Respiration de la lueur de fond */
+@keyframes pulse-ambient {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.9; }
+}
+
+/* Pulsation du coeur central */
+@keyframes pulse-heart {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.8); filter: brightness(100%) blur(10px); }
+    50% { transform: translate(-50%, -50%) scale(1.1); filter: brightness(140%) blur(15px); }
+}
+
+/* --- MISE À JOUR DE L'ANIMATION --- */
+/* IMPORTANT : L'angle rotateX ici DOIT être le même que celui au-dessus (82deg) */
+@keyframes rotate-ring {
+    from { 
+        transform: rotateX(82deg) rotateZ(0deg); 
+    }
+    to { 
+        transform: rotateX(82deg) rotateZ(360deg); 
+    }
+}
+/* --- INTERFACE APPLICATIVE (Z-INDEX 10 POUR ÊTRE DEVANT) --- */
+
+#ui-layer {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    background-color: transparent;
+}
+
+/* Style transparent pour les onglets (pour voir la galaxie) */
+.nav-tabs {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.6) !important;
+    background: transparent !important;
+    border: none !important;
+    font-size: 20px;
+    transition: all 0.3s;
+}
+
+.nav-link.active {
+    color: #ffffff !important;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    border-bottom: 3px solid white !important;
+    font-weight: bold;
+}
+/* PERSONNALISATION DES BOUTONS DU FOOTER*/
+/* 1. Base commune pour TOUS vos boutons images (pour enlever le style Bootstrap) */
+.btn-image-footer {
+    background-color: transparent !important; /* Enlève le fond par défaut */
+    border: none !important;                  /* Enlève la bordure */
+    box-shadow: none !important;              /* Enlève l'ombre au clic de Bootstrap */
+    width: 100px;                              /* Largeur de votre image */
+    height: 100px;                             /* Hauteur de votre image */
+    background-size: contain;                 /* L'image s'adapte à la taille du bouton */
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.1s ease;          /* Petite animation fluide */
+}
+
+/* 2. On attribue l'image normale au bouton Micro */
+.btn-photobooth-img {
+    background-image: url("images/logos/photobooth.png");
+}
+
+/* 3. L'état "PRESSÉ" (:active) pour le bouton Micro */
+.btn-photobooth-img:active {
+    filter: sepia(30%) brightness(100%) drop-shadow(0px 2px 2px rgb(102, 75, 25));
+    transform: scale(0.95);
+}
